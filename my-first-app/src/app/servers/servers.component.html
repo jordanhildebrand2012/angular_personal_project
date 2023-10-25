@@ -6,5 +6,10 @@
   Add Server
 </button>
 <p>{{ serverCreationStatus }}</p>
+<hr />
+<label for="serverName">Server name:</label>
+<input type="text" class="form-control" (input)="onServerNameUpdate($event)" />
+<p>{{ serverName }}</p>
+<hr />
 <app-server></app-server>
 <app-server></app-server>
