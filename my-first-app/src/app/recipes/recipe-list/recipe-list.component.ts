@@ -11,7 +11,12 @@ export class RecipeListComponent {
     new Recipe(
       'tomatoes',
       'you will need this for pasta',
-      'image path goes here'
+      'https://www.lastingredient.com/wp-content/uploads/2016/08/burst-tomato-pasta15-819x1024.jpg'
+    ),
+    new Recipe(
+      'unga - maize flour',
+      'you will need this for ugali',
+      'https://zambiankitchen.com/wp-content/uploads/2023/07/20230819_104846_0000.png'
     ),
   ];
 }
