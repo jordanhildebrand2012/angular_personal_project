@@ -8,6 +8,10 @@ import { Recipe } from '../recipe.model';
 })
 export class RecipeListComponent {
   recipes: Recipe[] = [
-    new Recipe('tomatoes', 'you will need this for pasta', ''),
+    new Recipe(
+      'tomatoes',
+      'you will need this for pasta',
+      'image path goes here'
+    ),
   ];
 }
