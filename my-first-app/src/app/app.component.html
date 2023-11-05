@@ -1,9 +1,13 @@
 <div class="container">
-  <app-header></app-header>
+  <app-header
+    (onSelectedCurrentLink)="getCurrentSelectedLink($event)"
+  ></app-header>
   <div class="row">
     <div class="col-md-12">
-      <app-recipes></app-recipes>
-      <app-shopping-list></app-shopping-list>
+      <app-recipes *ngIf="activeLink === 'recipe'"></app-recipes>
+      <app-shopping-list
+        *ngIf="activeLink === 'shopping-list'"
+      ></app-shopping-list>
     </div>
   </div>
 </div>
