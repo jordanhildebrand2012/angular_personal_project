@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Recipe } from '../recipe.model';
 
 @Component({
@@ -7,6 +7,7 @@ import { Recipe } from '../recipe.model';
   styleUrls: ['./recipe-list.component.css'],
 })
 export class RecipeListComponent {
+  @Output() selectedRecipeItemAfter = new EventEmitter<Recipe>();
   recipes: Recipe[] = [
     new Recipe(
       'tomatoes',
@@ -19,4 +20,8 @@ export class RecipeListComponent {
       'https://zambiankitchen.com/wp-content/uploads/2023/07/20230819_104846_0000.png'
     ),
   ];
+
+  getRecipeItem(recipe: Recipe) {
+    this.selectedRecipeItemAfter.emit(recipe);
+  }
 }
