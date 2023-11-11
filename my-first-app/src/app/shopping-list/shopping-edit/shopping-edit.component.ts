@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Recipe } from 'src/app/recipes/recipe.model';
 import { Ingredient } from 'src/app/shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -16,14 +17,16 @@ import { Ingredient } from 'src/app/shared/ingredient.model';
 export class ShoppingEditComponent {
   @ViewChild('nameInput') recipeName!: ElementRef;
   @ViewChild('amountInput') recipeAmount!: ElementRef;
-  @Output() userIngredientInput = new EventEmitter<Ingredient>();
   ingredient!: Ingredient;
+
+  constructor(private shoppingListService: ShoppingListService) {}
+
   addIngredient() {
     this.ingredient = new Ingredient(
       this.recipeName.nativeElement.value,
       this.recipeAmount.nativeElement.value
     );
 
-    this.userIngredientInput.emit(this.ingredient);
+    this.shoppingListService.addIngredient(this.ingredient);
   }
 }
