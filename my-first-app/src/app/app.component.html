@@ -4,10 +4,7 @@
   ></app-header>
   <div class="row">
     <div class="col-md-12">
-      <app-recipes *ngIf="activeLink === 'recipe'"></app-recipes>
-      <app-shopping-list
-        *ngIf="activeLink === 'shopping-list'"
-      ></app-shopping-list>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
