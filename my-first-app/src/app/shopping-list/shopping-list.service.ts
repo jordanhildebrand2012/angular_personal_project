@@ -33,6 +33,11 @@ export class ShoppingListService implements OnInit {
     this.ingredientChange.next(this.ingredients.slice());
   }
 
+  deleteIngredient(ingredientId: number) {
+    this.ingredients.splice(ingredientId, 1);
+    this.ingredientChange.next(this.ingredients.slice());
+  }
+
   addIngredients(ingredients: Ingredient[]) {
     this.ingredients.push(...ingredients);
   }
