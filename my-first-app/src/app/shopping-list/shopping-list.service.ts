@@ -11,8 +11,13 @@ export class ShoppingListService implements OnInit {
   ];
 
   ingredientChange = new Subject<Ingredient[]>();
+  ingredientItemIdClicked = new Subject<number>();
 
   ngOnInit(): void {}
+
+  getItemById(id: number): Ingredient {
+    return this.ingredients[id];
+  }
 
   getShoppingList(): Ingredient[] {
     return this.ingredients.slice();
@@ -20,6 +25,11 @@ export class ShoppingListService implements OnInit {
 
   addIngredient(ingredient: Ingredient): void {
     this.ingredients.push(ingredient);
+    this.ingredientChange.next(this.ingredients.slice());
+  }
+
+  updateIngredient(ingredientId: number, newIngredient: Ingredient) {
+    this.ingredients[ingredientId] = newIngredient;
     this.ingredientChange.next(this.ingredients.slice());
   }
 

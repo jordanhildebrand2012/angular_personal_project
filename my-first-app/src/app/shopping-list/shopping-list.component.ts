@@ -24,6 +24,10 @@ export class ShoppingListComponent {
       );
   }
 
+  getIngredientId(id: number) {
+    this.shoppingListService.ingredientItemIdClicked.next(id);
+  }
+
   ngOnDestroy() {
     this.ingredientChangeSubscription.unsubscribe();
   }
