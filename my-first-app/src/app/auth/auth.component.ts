@@ -8,6 +8,8 @@ import { AuthService } from './auth.service';
 })
 export class AuthComponent {
   isLoginMode: boolean = true;
+  isLoading: boolean = false;
+  error: string = '';
 
   constructor(private authService: AuthService) {}
 
@@ -24,13 +26,17 @@ export class AuthComponent {
     } else {
       const email = loginFormData.value.email;
       const password = loginFormData.value.password;
+      this.isLoading = true;
 
       this.authService.signUp(email, password).subscribe(
         (responseData) => {
+          this.isLoading = false;
           console.log(responseData);
         },
         (error) => {
-          console.log(error);
+          this.isLoading = false;
+          this.error = error;
+          console.log(this.error);
         }
       );
     }
