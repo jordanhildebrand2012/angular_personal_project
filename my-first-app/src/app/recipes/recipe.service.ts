@@ -7,22 +7,29 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class RecipeService {
   recipeChanges = new Subject<Recipe[]>();
-  recipes: Recipe[] = [
-    new Recipe(
-      'pasta',
-      'you will need this for pasta',
-      'https://www.lastingredient.com/wp-content/uploads/2016/08/burst-tomato-pasta15-819x1024.jpg',
-      [new Ingredient('tomatoes', 5), new Ingredient('pasta', 1)]
-    ),
-    new Recipe(
-      'unga',
-      'you will need this for ugali',
-      'https://zambiankitchen.com/wp-content/uploads/2023/07/20230819_104846_0000.png',
-      [new Ingredient('maize flour', 1), new Ingredient('water', 1)]
-    ),
-  ];
+  // recipes: Recipe[] = [
+  //   new Recipe(
+  //     'pasta',
+  //     'you will need this for pasta',
+  //     'https://www.lastingredient.com/wp-content/uploads/2016/08/burst-tomato-pasta15-819x1024.jpg',
+  //     [new Ingredient('tomatoes', 5), new Ingredient('pasta', 1)]
+  //   ),
+  //   new Recipe(
+  //     'unga',
+  //     'you will need this for ugali',
+  //     'https://zambiankitchen.com/wp-content/uploads/2023/07/20230819_104846_0000.png',
+  //     [new Ingredient('maize flour', 1), new Ingredient('water', 1)]
+  //   ),
+  // ];
+
+  private recipes: Recipe[] = [];
 
   constructor(private shoppingListService: ShoppingListService) {}
+
+  addRecipesToArray(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipeChanges.next(this.recipes.slice());
+  }
 
   getRecipe(index: number): Recipe {
     return this.recipes[index];
