@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
+import { AuthResponsePayload, AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -21,25 +22,30 @@ export class AuthComponent {
     if (!loginFormData.valid) {
       return;
     }
-    if (this.isLoginMode) {
-      //Do login logic
-    } else {
-      const email = loginFormData.value.email;
-      const password = loginFormData.value.password;
-      this.isLoading = true;
+    const email = loginFormData.value.email;
+    const password = loginFormData.value.password;
 
-      this.authService.signUp(email, password).subscribe(
-        (responseData) => {
-          this.isLoading = false;
-          console.log(responseData);
-        },
-        (error) => {
-          this.isLoading = false;
-          this.error = error;
-          console.log(this.error);
-        }
-      );
+    let authObservable: Observable<AuthResponsePayload>;
+
+    this.isLoading = true;
+    if (this.isLoginMode) {
+      authObservable = this.authService.loginUser(email, password);
+    } else {
+      authObservable = this.authService.signUp(email, password);
     }
+
+    authObservable.subscribe(
+      (responseData) => {
+        this.isLoading = false;
+        console.log(responseData);
+      },
+      (error) => {
+        this.isLoading = false;
+        this.error = error;
+        console.log(this.error);
+      }
+    );
+
     loginFormData.reset();
   }
 }
