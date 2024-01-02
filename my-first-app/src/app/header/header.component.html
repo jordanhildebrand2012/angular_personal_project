@@ -39,7 +39,11 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a style="cursor: pointer" *ngIf="isAuthenticate">Logout</a></li>
+        <li>
+          <a style="cursor: pointer" *ngIf="isAuthenticate" (click)="onLogout()"
+            >Logout</a
+          >
+        </li>
         <li class="dropdown" openCloseDropdown *ngIf="isAuthenticate">
           <a class="dropdown-toggle" data-toggle="dropdown"
             >Manage <span class="caret"></span

@@ -9,6 +9,7 @@ import {
   BehaviorSubject,
 } from 'rxjs';
 import { UserModel } from './user.model';
+import { Router } from '@angular/router';
 
 export interface AuthResponsePayload {
   idToken: string;
@@ -24,8 +25,9 @@ export interface AuthResponsePayload {
 })
 export class AuthService {
   user = new BehaviorSubject<UserModel | null>(null);
+  private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   signUp(email: string, password: string) {
     return this.http
@@ -73,6 +75,22 @@ export class AuthService {
       );
   }
 
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
+
   private handleUserAuthentication(
     email: string,
     userId: string,
@@ -82,6 +100,40 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new UserModel(email, userId, token, expirationDate);
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
+    localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  autoLogin() {
+    let userDatails: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    };
+
+    const userData = localStorage.getItem('userData');
+
+    if (!userData) {
+      return;
+    } else {
+      userDatails = JSON.parse(userData);
+    }
+
+    const loadedUser = new UserModel(
+      userDatails.email,
+      userDatails.id,
+      userDatails._token,
+      new Date(userDatails._tokenExpirationDate)
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userDatails._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
   }
 
   private handleErrors(returnedError: HttpErrorResponse) {
